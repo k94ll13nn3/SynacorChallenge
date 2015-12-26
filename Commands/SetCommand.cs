@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -14,7 +16,7 @@ namespace SynacorChallenge.Commands
             var value = VirtualMachine.GetValueAt(currentPosition + 2);
             VirtualMachine.SetRegisterValue(registerNumber, value);
 
-            Trace.WriteLine($"set register {registerNumber} to the value of {value}", Name);
+            Trace.WriteLine($"set register {registerNumber} to the value of {value}", this.Name);
             return currentPosition + 3;
         }
     }

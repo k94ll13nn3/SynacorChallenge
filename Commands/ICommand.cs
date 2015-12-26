@@ -1,4 +1,6 @@
-﻿namespace SynacorChallenge.Commands
+﻿// SynacorChallenge plugin
+
+namespace SynacorChallenge.Commands
 {
     internal interface ICommand
     {

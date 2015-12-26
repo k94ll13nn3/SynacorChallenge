@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -12,7 +14,7 @@ namespace SynacorChallenge.Commands
         {
             var value = VirtualMachine.GetValueAt(currentPosition + 2);
 
-            Trace.WriteLine($"if {VirtualMachine.GetValueAt(currentPosition + 1)} is zero, jump to {value}", Name);
+            Trace.WriteLine($"if {VirtualMachine.GetValueAt(currentPosition + 1)} is zero, jump to {value}", this.Name);
             if (VirtualMachine.GetValueAt(currentPosition + 1) == 0)
             {
                 return value;

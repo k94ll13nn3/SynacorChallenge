@@ -1,21 +1,15 @@
-﻿using System;
-using System.Diagnostics;
-using System.IO;
+﻿// SynacorChallenge plugin
+
+using System;
 
 namespace SynacorChallenge
 {
     internal class Program
     {
-        private static void Main()
+        private static void Main(string[] args)
         {
-            File.Delete("virtual-machine.log");
-            using (var textWriterTraceListener = new TextWriterTraceListener("virtual-machine.log"))
-            {
-                Trace.Listeners.Add(textWriterTraceListener);
-            }
-            Trace.AutoFlush = true;
-
-            VirtualMachine.LoadFile(@"..\..\challenge.bin");
+            VirtualMachine.Initialize("vm-config.json");
+            VirtualMachine.LoadFile(args[0]);
             VirtualMachine.Run();
 
             Console.WriteLine("\nProcess terminated");

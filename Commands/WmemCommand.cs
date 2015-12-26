@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SynacorChallenge plugin
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace SynacorChallenge.Commands
             var address = VirtualMachine.GetValueAt(currentPosition + 1);
             var value = VirtualMachine.GetValueAt(currentPosition + 2);
 
-            Trace.WriteLine($"write the value from {currentPosition + 2} into memory at address {address}", Name);
+            Trace.WriteLine($"write the value from {currentPosition + 2} into memory at address {address}", this.Name);
 
             VirtualMachine.WriteMemory(address, value);
 

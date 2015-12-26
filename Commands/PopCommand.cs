@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -13,7 +15,7 @@ namespace SynacorChallenge.Commands
             var value = VirtualMachine.PopFromStack();
             var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
             VirtualMachine.SetRegisterValue(registerNumber, value);
-            Trace.WriteLine($"remove the top element from the stack and write it into {registerNumber}", Name);
+            Trace.WriteLine($"remove the top element from the stack and write it into {registerNumber}", this.Name);
 
             return currentPosition + 2;
         }

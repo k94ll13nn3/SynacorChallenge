@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -10,7 +12,7 @@ namespace SynacorChallenge.Commands
 
         public uint Execute(uint currentPosition)
         {
-            Trace.WriteLine("no operation", Name);
+            Trace.WriteLine("no operation", this.Name);
             return currentPosition + 1;
         }
     }

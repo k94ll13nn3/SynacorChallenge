@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SynacorChallenge plugin
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,7 +18,7 @@ namespace SynacorChallenge.Commands
         public uint Execute(uint currentPosition)
         {
             var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            Trace.WriteLine($"read a character from the terminal and write its ASCII code to {registerNumber}", Name);
+            Trace.WriteLine($"read a character from the terminal and write its ASCII code to {registerNumber}", this.Name);
 
             var c = Console.ReadKey().KeyChar;
 

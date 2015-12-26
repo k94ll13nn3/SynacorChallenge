@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SynacorChallenge plugin
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,7 +20,7 @@ namespace SynacorChallenge.Commands
             var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
             var value = VirtualMachine.GetValueAt(currentPosition + 2);
 
-            Trace.WriteLine($"read memory at address {value} and write it to {registerNumber}", Name);
+            Trace.WriteLine($"read memory at address {value} and write it to {registerNumber}", this.Name);
 
             VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.GetValueAt(value));
 

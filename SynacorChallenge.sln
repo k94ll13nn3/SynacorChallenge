@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1D267FC9-FFBF-41F1-9D4A-B43A6C6E3F05}"
 	ProjectSection(SolutionItems) = preProject
 		arch-spec = arch-spec
+		stylecop.json = stylecop.json
 	EndProjectSection
 EndProject
 Global

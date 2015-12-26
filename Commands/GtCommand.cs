@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -14,7 +16,7 @@ namespace SynacorChallenge.Commands
             var leftValue = VirtualMachine.GetValueAt(currentPosition + 2);
             var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
 
-            Trace.WriteLine($"set {registerNumber} to 1 if {leftValue} is greater than {rightValue}; set it to 0 otherwise", Name);
+            Trace.WriteLine($"set {registerNumber} to 1 if {leftValue} is greater than {rightValue}; set it to 0 otherwise", this.Name);
 
             if (leftValue > rightValue)
             {

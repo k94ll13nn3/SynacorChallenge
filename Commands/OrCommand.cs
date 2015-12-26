@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -15,7 +17,7 @@ namespace SynacorChallenge.Commands
             var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
             VirtualMachine.SetRegisterValue(registerNumber, (ushort)(leftValue | rightValue));
 
-            Trace.WriteLine($"stores into {registerNumber} the bitwise or of {leftValue} and {rightValue}", Name);
+            Trace.WriteLine($"stores into {registerNumber} the bitwise or of {leftValue} and {rightValue}", this.Name);
 
             return currentPosition + 4;
         }

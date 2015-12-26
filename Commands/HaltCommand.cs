@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -10,7 +12,7 @@ namespace SynacorChallenge.Commands
 
         public uint Execute(uint currentPosition)
         {
-            Trace.WriteLine("stop execution and terminate the program", Name);
+            Trace.WriteLine("stop execution and terminate the program", this.Name);
             return int.MaxValue;
         }
     }

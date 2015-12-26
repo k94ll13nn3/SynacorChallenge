@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿// SynacorChallenge plugin
+
+using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
 {
@@ -14,7 +16,7 @@ namespace SynacorChallenge.Commands
             var value = VirtualMachine.GetValueAt(currentPosition + 2);
             VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.NegateValue(value));
 
-            Trace.WriteLine($"stores bitwise inverse of {value} in {registerNumber}", Name);
+            Trace.WriteLine($"stores bitwise inverse of {value} in {registerNumber}", this.Name);
 
             return currentPosition + 3;
         }

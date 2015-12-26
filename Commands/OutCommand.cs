@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SynacorChallenge plugin
+
+using System;
 using System.Diagnostics;
 
 namespace SynacorChallenge.Commands
@@ -11,7 +13,7 @@ namespace SynacorChallenge.Commands
 
         public uint Execute(uint currentPosition)
         {
-            Trace.WriteLine($"write the character represented by ASCII code {VirtualMachine.GetValueAt(currentPosition + 1)} to the terminal", Name);
+            Trace.WriteLine($"write the character represented by ASCII code {VirtualMachine.GetValueAt(currentPosition + 1)} to the terminal", this.Name);
             Console.Write((char)VirtualMachine.GetValueAt(currentPosition + 1));
 
             return currentPosition + 2;

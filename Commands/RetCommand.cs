@@ -1,4 +1,6 @@
-﻿using System;
+﻿// SynacorChallenge plugin
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,7 +17,7 @@ namespace SynacorChallenge.Commands
 
         public uint Execute(uint currentPosition)
         {
-            Trace.WriteLine("remove the top element from the stack and jump to it", Name);
+            Trace.WriteLine("remove the top element from the stack and jump to it", this.Name);
             return VirtualMachine.PopFromStack();
         }
     }
