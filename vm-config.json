@@ -1,5 +1,6 @@
 ﻿{
   "LogActivity": true,
   "LogFileName": "virtual-machine.log",
-  "Registers": 8
+  "Registers": 8,
+  "ArchitectureBits": 15
 }

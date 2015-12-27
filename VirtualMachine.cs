@@ -12,19 +12,15 @@ namespace SynacorChallenge
 {
     internal static class VirtualMachine
     {
-        private const uint NumberOfRegisters = 8;
-        private const uint RegistersStart = 32768;
-        private static readonly ushort[] Registers = new ushort[NumberOfRegisters];
         private static readonly Stack<ushort> Stack = new Stack<ushort>();
-
+        private static Configuration config;
         private static ushort[] content;
-
-        private static VirtualMachineConfiguration config;
+        private static ushort[] registers;
 
         // Adds two value
         public static ushort Add(ushort leftValue, ushort rightValue)
         {
-            return (ushort)((leftValue + rightValue) % RegistersStart);
+            return (ushort)((leftValue + rightValue) % config.IntegerLimit);
         }
 
         // Return the number of the register designated by value,
@@ -37,7 +33,7 @@ namespace SynacorChallenge
                 throw new ArgumentException("The position does not link to a register.", nameof(position));
             }
 
-            return value - RegistersStart;
+            return value - config.IntegerLimit;
         }
 
         // Returns the value corresponding to the position specified.
@@ -47,7 +43,7 @@ namespace SynacorChallenge
 
             if (IsRegister(value))
             {
-                return GetRegisterValue(value - RegistersStart);
+                return GetRegisterValue(value - config.IntegerLimit);
             }
 
             return value;
@@ -72,7 +68,7 @@ namespace SynacorChallenge
 
         public static ushort NegateValue(ushort value)
         {
-            return (ushort)(~value & 0x7FFF);
+            return (ushort)(~value & (config.IntegerLimit - 1));
         }
 
         public static ushort PopFromStack()
@@ -101,12 +97,12 @@ namespace SynacorChallenge
         // Set the registerNumber-th register to value.
         public static void SetRegisterValue(uint registerNumber, ushort value)
         {
-            if (registerNumber >= NumberOfRegisters)
+            if (registerNumber >= config.Registers)
             {
                 throw new ArgumentException("Invalid register number.", nameof(registerNumber));
             }
 
-            Registers[registerNumber] = value;
+            registers[registerNumber] = value;
         }
 
         public static void WriteMemory(ushort address, ushort value)
@@ -116,7 +112,9 @@ namespace SynacorChallenge
 
         internal static void Initialize(string configFile)
         {
-            config = JsonConvert.DeserializeObject<VirtualMachineConfiguration>(File.ReadAllText(configFile));
+            config = JsonConvert.DeserializeObject<Configuration>(File.ReadAllText(configFile));
+
+            registers = new ushort[config.Registers];
 
             if (config.LogActivity)
             {
@@ -133,24 +131,24 @@ namespace SynacorChallenge
 
         internal static ushort Mult(ushort leftValue, ushort rightValue)
         {
-            return (ushort)((leftValue * rightValue) % RegistersStart);
+            return (ushort)((leftValue * rightValue) % config.IntegerLimit);
         }
 
         // Returns the value of the registerNumber-th register.
         private static ushort GetRegisterValue(uint registerNumber)
         {
-            if (registerNumber >= NumberOfRegisters)
+            if (registerNumber >= config.Registers)
             {
                 throw new ArgumentException("Invalid register number.", nameof(registerNumber));
             }
 
-            return Registers[registerNumber];
+            return registers[registerNumber];
         }
 
         // Test if the value describe a register.
         private static bool IsRegister(uint value)
         {
-            return value >= RegistersStart && value <= (RegistersStart + NumberOfRegisters);
+            return value >= config.IntegerLimit && value <= (config.IntegerLimit + config.Registers);
         }
 
         private static uint ProcessCommand(uint currentPosition)
