@@ -6,16 +6,17 @@ namespace SynacorChallenge.Commands
 {
     internal class CallCommand : ICommand
     {
-        public int Identifier => 17;
+        public ushort Identifier => 17;
 
         public string Name => "call";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            Trace.WriteLine($"write the address of the next instruction to the stack and jump to {VirtualMachine.GetValueAt(currentPosition + 1)}", this.Name);
-            VirtualMachine.PushToStack((ushort)(currentPosition + 2));
+            var value = VirtualMachine.GetValueAt();
+            VirtualMachine.PushToStack(VirtualMachine.GetPosition());
+            VirtualMachine.SetPosition(value);
 
-            return VirtualMachine.GetValueAt(currentPosition + 1);
+            Trace.WriteLine($"write the address of the next instruction to the stack and jump to {value}", this.Name);
         }
     }
 }

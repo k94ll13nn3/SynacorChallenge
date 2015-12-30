@@ -6,18 +6,17 @@ namespace SynacorChallenge.Commands
 {
     internal class PopCommand : ICommand
     {
-        public int Identifier => 3;
+        public ushort Identifier => 3;
 
         public string Name => "pop";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
             var value = VirtualMachine.PopFromStack();
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
             VirtualMachine.SetRegisterValue(registerNumber, value);
-            Trace.WriteLine($"remove the top element from the stack and write it into {registerNumber}", this.Name);
 
-            return currentPosition + 2;
+            Trace.WriteLine($"remove the top element from the stack and write it into {registerNumber}", this.Name);
         }
     }
 }

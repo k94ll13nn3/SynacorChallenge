@@ -6,14 +6,15 @@ namespace SynacorChallenge.Commands
 {
     internal class HaltCommand : ICommand
     {
-        public int Identifier => 0;
+        public ushort Identifier => 0;
 
         public string Name => "halt";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
+            VirtualMachine.Terminate();
+
             Trace.WriteLine("stop execution and terminate the program", this.Name);
-            return int.MaxValue;
         }
     }
 }

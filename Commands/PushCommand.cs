@@ -6,16 +6,16 @@ namespace SynacorChallenge.Commands
 {
     internal class PushCommand : ICommand
     {
-        public int Identifier => 2;
+        public ushort Identifier => 2;
 
         public string Name => "push";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            Trace.WriteLine($"push {VirtualMachine.GetValueAt(currentPosition + 1)} onto the stack", this.Name);
-            VirtualMachine.PushToStack(VirtualMachine.GetValueAt(currentPosition + 1));
+            var value = VirtualMachine.GetValueAt();
+            VirtualMachine.PushToStack(value);
 
-            return currentPosition + 2;
+            Trace.WriteLine($"push {value} onto the stack", this.Name);
         }
     }
 }

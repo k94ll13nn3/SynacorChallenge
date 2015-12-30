@@ -6,21 +6,20 @@ namespace SynacorChallenge.Commands
 {
     internal class JtCommand : ICommand
     {
-        public int Identifier => 7;
+        public ushort Identifier => 7;
 
         public string Name => "jt";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var value = VirtualMachine.GetValueAt(currentPosition + 2);
-
-            Trace.WriteLine($"if {VirtualMachine.GetValueAt(currentPosition + 1)} is nonzero, jump to {value}", this.Name);
-            if (VirtualMachine.GetValueAt(currentPosition + 1) != 0)
+            var value = VirtualMachine.GetValueAt();
+            var jump = VirtualMachine.GetValueAt();
+            if (value != 0)
             {
-                return value;
+                VirtualMachine.SetPosition(jump);
             }
 
-            return currentPosition + 3;
+            Trace.WriteLine($"if {value} is nonzero, jump to {jump}", this.Name);
         }
     }
 }

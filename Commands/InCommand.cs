@@ -7,27 +7,17 @@ namespace SynacorChallenge.Commands
 {
     internal class InCommand : ICommand
     {
-        public int Identifier => 20;
+        public ushort Identifier => 20;
 
         public string Name => "in";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            Trace.WriteLine($"read a character from the terminal and write its ASCII code to {registerNumber}", this.Name);
-
+            var registerNumber = VirtualMachine.GetRegisterNumber();
             var c = Console.ReadKey();
+            VirtualMachine.SetRegisterValue(registerNumber, c.Key == ConsoleKey.Enter ? '\n' : c.KeyChar);
 
-            if (c.Key == ConsoleKey.Enter)
-            {
-                VirtualMachine.SetRegisterValue(registerNumber, '\n');
-            }
-            else
-            {
-                VirtualMachine.SetRegisterValue(registerNumber, c.KeyChar);
-            }
-
-            return currentPosition + 2;
+            Trace.WriteLine($"read a character from the terminal and write its ASCII code to {registerNumber}", this.Name);
         }
     }
 }

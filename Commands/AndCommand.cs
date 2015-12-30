@@ -6,20 +6,18 @@ namespace SynacorChallenge.Commands
 {
     internal class AndCommand : ICommand
     {
-        public int Identifier => 12;
+        public ushort Identifier => 12;
 
         public string Name => "and";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            var leftValue = VirtualMachine.GetValueAt(currentPosition + 2);
-            var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var leftValue = VirtualMachine.GetValueAt();
+            var rightValue = VirtualMachine.GetValueAt();
             VirtualMachine.SetRegisterValue(registerNumber, (ushort)(leftValue & rightValue));
 
             Trace.WriteLine($"stores into {registerNumber} the bitwise and of {leftValue} and {rightValue}", this.Name);
-
-            return currentPosition + 4;
         }
     }
 }

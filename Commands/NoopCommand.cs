@@ -6,14 +6,13 @@ namespace SynacorChallenge.Commands
 {
     internal class NoopCommand : ICommand
     {
-        public int Identifier => 21;
+        public ushort Identifier => 21;
 
         public string Name => "noop";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
             Trace.WriteLine("no operation", this.Name);
-            return currentPosition + 1;
         }
     }
 }

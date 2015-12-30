@@ -6,20 +6,18 @@ namespace SynacorChallenge.Commands
 {
     internal class OrCommand : ICommand
     {
-        public int Identifier => 13;
+        public ushort Identifier => 13;
 
         public string Name => "or";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            var leftValue = VirtualMachine.GetValueAt(currentPosition + 2);
-            var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var leftValue = VirtualMachine.GetValueAt();
+            var rightValue = VirtualMachine.GetValueAt();
             VirtualMachine.SetRegisterValue(registerNumber, (ushort)(leftValue | rightValue));
 
             Trace.WriteLine($"stores into {registerNumber} the bitwise or of {leftValue} and {rightValue}", this.Name);
-
-            return currentPosition + 4;
         }
     }
 }

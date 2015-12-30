@@ -6,20 +6,18 @@ namespace SynacorChallenge.Commands
 {
     internal class WmemCommand : ICommand
     {
-        public int Identifier => 16;
+        public ushort Identifier => 16;
 
         public string Name => "wmem";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var address = VirtualMachine.GetValueAt(currentPosition + 1);
-            var value = VirtualMachine.GetValueAt(currentPosition + 2);
+            var address = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAt();
 
-            Trace.WriteLine($"write the value from {currentPosition + 2} into memory at address {address}", this.Name);
+            Trace.WriteLine($"write {value} into memory at address {address}", this.Name);
 
             VirtualMachine.WriteMemory(address, value);
-
-            return currentPosition + 3;
         }
     }
 }

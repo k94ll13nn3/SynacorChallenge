@@ -6,21 +6,20 @@ namespace SynacorChallenge.Commands
 {
     internal class JfCommand : ICommand
     {
-        public int Identifier => 8;
+        public ushort Identifier => 8;
 
         public string Name => "jf";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var value = VirtualMachine.GetValueAt(currentPosition + 2);
-
-            Trace.WriteLine($"if {VirtualMachine.GetValueAt(currentPosition + 1)} is zero, jump to {value}", this.Name);
-            if (VirtualMachine.GetValueAt(currentPosition + 1) == 0)
+            var value = VirtualMachine.GetValueAt();
+            var jump = VirtualMachine.GetValueAt();
+            if (value == 0)
             {
-                return value;
+                VirtualMachine.SetPosition(jump);
             }
 
-            return currentPosition + 3;
+            Trace.WriteLine($"if {value} is zero, jump to {jump}", this.Name);
         }
     }
 }

@@ -13,33 +13,38 @@ namespace SynacorChallenge
     internal static class VirtualMachine
     {
         private static readonly Stack<ushort> Stack = new Stack<ushort>();
+        private static List<ICommand> commandList;
         private static Configuration config;
         private static ushort[] content;
+
+        private static int currentPosition;
+        private static bool processTerminated;
+
         private static ushort[] registers;
 
         // Adds two value
         public static ushort Add(ushort leftValue, ushort rightValue)
         {
-            return (ushort)((leftValue + rightValue) % config.IntegerLimit);
+            var value = leftValue + rightValue;
+            return (ushort)(value % config.IntegerLimit);
         }
 
-        // Return the number of the register designated by value,
-        // i.e. a value from 0 to numberOfRegisters.
-        public static uint GetRegisterNumber(uint position)
+        public static uint GetRegisterNumber()
         {
-            var value = content[position];
+            var value = content[currentPosition];
+            currentPosition++;
             if (!IsRegister(value))
             {
-                throw new ArgumentException("The position does not link to a register.", nameof(position));
+                throw new ArgumentException("The position does not link to a register.");
             }
 
             return value - config.IntegerLimit;
         }
 
-        // Returns the value corresponding to the position specified.
-        public static ushort GetValueAt(uint position)
+        public static ushort GetValueAt()
         {
-            var value = content[position];
+            var value = content[currentPosition];
+            currentPosition++;
 
             if (IsRegister(value))
             {
@@ -73,7 +78,8 @@ namespace SynacorChallenge
 
         public static ushort PopFromStack()
         {
-            return Stack.Pop();
+            var poppedValue = Stack.Pop();
+            return poppedValue;
         }
 
         public static void PushToStack(ushort value)
@@ -85,13 +91,16 @@ namespace SynacorChallenge
         {
             if (config.BinaryFileLoaded)
             {
-                var pos = ProcessCommand(0);
-
-                while (pos != int.MaxValue)
+                while (!processTerminated)
                 {
-                    pos = ProcessCommand(pos);
+                    ProcessCommand();
                 }
             }
+        }
+
+        public static void SetPosition(int position)
+        {
+            currentPosition = position;
         }
 
         // Set the registerNumber-th register to value.
@@ -105,9 +114,68 @@ namespace SynacorChallenge
             registers[registerNumber] = value;
         }
 
+        public static void Terminate()
+        {
+            processTerminated = true;
+        }
+
         public static void WriteMemory(ushort address, ushort value)
         {
             content[address] = value;
+        }
+
+        internal static void Compile(string inFile, string outFile)
+        {
+            var lines = File.ReadLines(inFile);
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    foreach (var line in lines)
+                    {
+                        var tokens = line.Split(' ');
+
+                        try
+                        {
+                            writer.Write(commandList.Single(c => c.Name == tokens[0]).Identifier);
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            Console.WriteLine($"Unknown command : {tokens[0]}");
+                            Console.WriteLine("Compilation aborted");
+                            return;
+                        }
+
+                        for (int i = 1; i < tokens.Length; i++)
+                        {
+                            writer.Write(ushort.Parse(tokens[i]));
+                        }
+                    }
+
+                    using (FileStream file = new FileStream(outFile, FileMode.CreateNew))
+                    {
+                        stream.WriteTo(file);
+                    }
+                }
+            }
+        }
+
+        internal static ushort GetPosition()
+        {
+            return (ushort)currentPosition;
+        }
+
+        internal static ushort GetValueAtAddress(ushort position)
+        {
+            var value = content[position];
+
+            if (IsRegister(value))
+            {
+                return GetRegisterValue(value - config.IntegerLimit);
+            }
+
+            return value;
         }
 
         internal static void Initialize(string configFile)
@@ -118,8 +186,6 @@ namespace SynacorChallenge
 
             if (config.LogActivity)
             {
-                Console.WriteLine($"Trace will be written to {config.LogFileName}");
-
                 Trace.AutoFlush = true;
                 File.Delete(config.LogFileName);
                 using (var textWriterTraceListener = new TextWriterTraceListener(config.LogFileName))
@@ -127,35 +193,8 @@ namespace SynacorChallenge
                     Trace.Listeners.Add(textWriterTraceListener);
                 }
             }
-        }
 
-        internal static ushort Mult(ushort leftValue, ushort rightValue)
-        {
-            return (ushort)((leftValue * rightValue) % config.IntegerLimit);
-        }
-
-        // Returns the value of the registerNumber-th register.
-        private static ushort GetRegisterValue(uint registerNumber)
-        {
-            if (registerNumber >= config.Registers)
-            {
-                throw new ArgumentException("Invalid register number.", nameof(registerNumber));
-            }
-
-            return registers[registerNumber];
-        }
-
-        // Test if the value describe a register.
-        private static bool IsRegister(uint value)
-        {
-            return value >= config.IntegerLimit && value <= (config.IntegerLimit + config.Registers);
-        }
-
-        private static uint ProcessCommand(uint currentPosition)
-        {
-            var command = content[currentPosition];
-
-            var commandList = new List<ICommand>
+            commandList = new List<ICommand>
             {
                 new OutCommand(),
                 new HaltCommand(),
@@ -180,17 +219,46 @@ namespace SynacorChallenge
                 new RetCommand(),
                 new InCommand()
             };
+        }
+
+        internal static ushort Mult(ushort leftValue, ushort rightValue)
+        {
+            var value = leftValue * rightValue;
+            return (ushort)(value % config.IntegerLimit);
+        }
+
+        // Returns the value of the registerNumber-th register.
+        private static ushort GetRegisterValue(uint registerNumber)
+        {
+            if (registerNumber >= config.Registers)
+            {
+                throw new ArgumentException("Invalid register number.", nameof(registerNumber));
+            }
+
+            return registers[registerNumber];
+        }
+
+        // Test if the value describe a register.
+        private static bool IsRegister(uint value)
+        {
+            return value >= config.IntegerLimit && value <= (config.IntegerLimit + config.Registers);
+        }
+
+        private static void ProcessCommand()
+        {
+            var command = content[currentPosition];
+            currentPosition++;
 
             var commandToExecute = commandList.FirstOrDefault(c => c.Identifier == command);
 
             if (commandToExecute != null)
             {
-                return commandToExecute.Execute(currentPosition);
+                commandToExecute.Execute();
             }
-
-            Trace.WriteLine($"Unknown command : {command}");
-
-            return currentPosition + 1;
+            else
+            {
+                Trace.WriteLine($"Unknown command : {command}");
+            }
         }
     }
 }

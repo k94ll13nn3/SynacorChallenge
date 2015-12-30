@@ -6,14 +6,16 @@ namespace SynacorChallenge.Commands
 {
     internal class JmpCommand : ICommand
     {
-        public int Identifier => 6;
+        public ushort Identifier => 6;
 
         public string Name => "jmp";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            Trace.WriteLine($"jump to {VirtualMachine.GetValueAt(currentPosition + 1)}", this.Name);
-            return VirtualMachine.GetValueAt(currentPosition + 1);
+            var value = VirtualMachine.GetValueAt();
+            VirtualMachine.SetPosition(value);
+
+            Trace.WriteLine($"jump to {value}", this.Name);
         }
     }
 }

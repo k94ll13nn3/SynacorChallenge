@@ -4,10 +4,10 @@ namespace SynacorChallenge.Commands
 {
     internal interface ICommand
     {
-        int Identifier { get; }
+        ushort Identifier { get; }
 
         string Name { get; }
 
-        uint Execute(uint currentPosition);
+        void Execute();
     }
 }

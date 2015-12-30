@@ -6,20 +6,18 @@ namespace SynacorChallenge.Commands
 {
     internal class ModCommand : ICommand
     {
-        public int Identifier => 11;
+        public ushort Identifier => 11;
 
         public string Name => "mod";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            var leftValue = VirtualMachine.GetValueAt(currentPosition + 2);
-            var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var leftValue = VirtualMachine.GetValueAt();
+            var rightValue = VirtualMachine.GetValueAt();
             VirtualMachine.SetRegisterValue(registerNumber, (ushort)(leftValue % rightValue));
 
             Trace.WriteLine($"store into {registerNumber} the remainder of {leftValue} divided by {rightValue}", this.Name);
-
-            return currentPosition + 4;
         }
     }
 }

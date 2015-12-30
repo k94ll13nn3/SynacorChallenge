@@ -7,16 +7,16 @@ namespace SynacorChallenge.Commands
 {
     internal class OutCommand : ICommand
     {
-        public int Identifier => 19;
+        public ushort Identifier => 19;
 
         public string Name => "out";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            Trace.WriteLine($"write the character represented by ASCII code {VirtualMachine.GetValueAt(currentPosition + 1)} to the terminal", this.Name);
-            Console.Write((char)VirtualMachine.GetValueAt(currentPosition + 1));
+            var value = VirtualMachine.GetValueAt();
+            Console.Write((char)value);
 
-            return currentPosition + 2;
+            Trace.WriteLine($"write the character represented by ASCII code {value} to the terminal", this.Name);
         }
     }
 }

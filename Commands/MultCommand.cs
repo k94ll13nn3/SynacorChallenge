@@ -6,20 +6,18 @@ namespace SynacorChallenge.Commands
 {
     internal class MultCommand : ICommand
     {
-        public int Identifier => 10;
+        public ushort Identifier => 10;
 
         public string Name => "mult";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            var leftValue = VirtualMachine.GetValueAt(currentPosition + 2);
-            var rightValue = VirtualMachine.GetValueAt(currentPosition + 3);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var leftValue = VirtualMachine.GetValueAt();
+            var rightValue = VirtualMachine.GetValueAt();
             VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.Mult(leftValue, rightValue));
 
             Trace.WriteLine($"store into {registerNumber} the product of {leftValue} and {rightValue}", this.Name);
-
-            return currentPosition + 4;
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿// SynacorChallenge plugin
 
-using System;
+using System.Linq;
 
 namespace SynacorChallenge
 {
@@ -9,11 +9,16 @@ namespace SynacorChallenge
         private static void Main(string[] args)
         {
             VirtualMachine.Initialize("vm-config.json");
-            VirtualMachine.LoadFile(args[0]);
-            VirtualMachine.Run();
 
-            Console.WriteLine("\nProcess terminated");
-            Console.ReadKey();
+            if (args[0] == "run" && args.Count() > 1)
+            {
+                VirtualMachine.LoadFile(args[1]);
+                VirtualMachine.Run();
+            }
+            else if (args[0] == "compile" && args.Count() > 2)
+            {
+                VirtualMachine.Compile(args[1], args[2]);
+            }
         }
     }
 }

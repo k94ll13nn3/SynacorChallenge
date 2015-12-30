@@ -6,20 +6,17 @@ namespace SynacorChallenge.Commands
 {
     internal class RmemCommand : ICommand
     {
-        public int Identifier => 15;
+        public ushort Identifier => 15;
 
         public string Name => "rmem";
 
-        public uint Execute(uint currentPosition)
+        public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber(currentPosition + 1);
-            var value = VirtualMachine.GetValueAt(currentPosition + 2);
+            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var value = VirtualMachine.GetValueAt();
+            VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.GetValueAtAddress(value));
 
             Trace.WriteLine($"read memory at address {value} and write it to {registerNumber}", this.Name);
-
-            VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.GetValueAt(value));
-
-            return currentPosition + 3;
         }
     }
 }
