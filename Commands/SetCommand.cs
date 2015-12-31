@@ -12,8 +12,8 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber();
-            var value = VirtualMachine.GetValueAt();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
+            var value = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.SetRegisterValue(registerNumber, value);
 
             Trace.WriteLine($"set register {registerNumber} to the value of {value}", this.Name);

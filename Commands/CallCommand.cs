@@ -12,7 +12,7 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var value = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.PushToStack(VirtualMachine.GetPosition());
             VirtualMachine.SetPosition(value);
 

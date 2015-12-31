@@ -12,8 +12,8 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var address = VirtualMachine.GetValueAt();
-            var value = VirtualMachine.GetValueAt();
+            var address = VirtualMachine.GetValueAndAdvance();
+            var value = VirtualMachine.GetValueAndAdvance();
 
             Trace.WriteLine($"write {value} into memory at address {address}", this.Name);
 

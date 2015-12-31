@@ -13,7 +13,7 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var value = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAndAdvance();
             Console.Write((char)value);
 
             Trace.WriteLine($"write the character represented by ASCII code {value} to the terminal", this.Name);

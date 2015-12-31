@@ -13,7 +13,7 @@ namespace SynacorChallenge.Commands
         public void Execute()
         {
             var value = VirtualMachine.PopFromStack();
-            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
             VirtualMachine.SetRegisterValue(registerNumber, value);
 
             Trace.WriteLine($"remove the top element from the stack and write it into {registerNumber}", this.Name);

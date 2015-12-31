@@ -19,6 +19,10 @@ namespace SynacorChallenge
             {
                 VirtualMachine.Compile(args[1], args[2]);
             }
+            else if (args[0] == "decompile" && args.Count() > 2)
+            {
+                VirtualMachine.Decompile(args[1], args[2]);
+            }
         }
     }
 }

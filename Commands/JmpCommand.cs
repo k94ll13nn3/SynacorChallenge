@@ -12,7 +12,7 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var value = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.SetPosition(value);
 
             Trace.WriteLine($"jump to {value}", this.Name);

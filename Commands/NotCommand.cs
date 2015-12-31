@@ -12,8 +12,8 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber();
-            var value = VirtualMachine.GetValueAt();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
+            var value = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.NegateValue(value));
 
             Trace.WriteLine($"stores bitwise inverse of {value} in {registerNumber}", this.Name);

@@ -12,9 +12,9 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber();
-            var leftValue = VirtualMachine.GetValueAt();
-            var rightValue = VirtualMachine.GetValueAt();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
+            var leftValue = VirtualMachine.GetValueAndAdvance();
+            var rightValue = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.SetRegisterValue(registerNumber, VirtualMachine.Add(leftValue, rightValue));
 
             Trace.WriteLine($"assign into {registerNumber} the sum of {leftValue} and {rightValue}", this.Name);

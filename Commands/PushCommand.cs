@@ -12,7 +12,7 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var value = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.PushToStack(value);
 
             Trace.WriteLine($"push {value} onto the stack", this.Name);

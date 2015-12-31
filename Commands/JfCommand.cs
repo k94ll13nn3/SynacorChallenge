@@ -12,8 +12,8 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var value = VirtualMachine.GetValueAt();
-            var jump = VirtualMachine.GetValueAt();
+            var value = VirtualMachine.GetValueAndAdvance();
+            var jump = VirtualMachine.GetValueAndAdvance();
             if (value == 0)
             {
                 VirtualMachine.SetPosition(jump);

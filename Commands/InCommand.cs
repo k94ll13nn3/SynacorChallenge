@@ -13,7 +13,7 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
             var c = Console.ReadKey();
             VirtualMachine.SetRegisterValue(registerNumber, c.Key == ConsoleKey.Enter ? '\n' : c.KeyChar);
 

@@ -1,12 +1,12 @@
 ﻿// SynacorChallenge plugin
 
-using Newtonsoft.Json;
-using SynacorChallenge.Commands;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
+using SynacorChallenge.Commands;
 
 namespace SynacorChallenge
 {
@@ -29,7 +29,7 @@ namespace SynacorChallenge
             return (ushort)(value % config.IntegerLimit);
         }
 
-        public static uint GetRegisterNumber()
+        public static uint GetRegisterNumberAndAdvance()
         {
             var value = content[currentPosition];
             currentPosition++;
@@ -41,7 +41,7 @@ namespace SynacorChallenge
             return value - config.IntegerLimit;
         }
 
-        public static ushort GetValueAt()
+        public static ushort GetValueAndAdvance()
         {
             var value = content[currentPosition];
             currentPosition++;
@@ -159,6 +159,54 @@ namespace SynacorChallenge
                     }
                 }
             }
+        }
+
+        internal static void Decompile(string inFile, string outFile)
+        {
+            ushort[] binContent;
+            using (BinaryReader b = new BinaryReader(File.Open(inFile, FileMode.Open)))
+            {
+                var i = 0;
+                var length = b.BaseStream.Length;
+                binContent = new ushort[length / 2];
+                while (i * 2 < length)
+                {
+                    binContent[i] = b.ReadUInt16();
+                    i++;
+                }
+            }
+
+            var noCommands = new int[] { 0, 18, 21 };
+            var oneCommands = new int[] { 2, 3, 6, 17, 19, 20 };
+            var twoCommands = new int[] { 1, 7, 8, 14, 15, 16 };
+            var threeCommands = new int[] { 4, 5, 9, 10, 11, 12, 13 };
+
+            var lines = new List<string>();
+            for (int cursor = 0; cursor < binContent.Length; cursor++)
+            {
+                var command = commandList.Single(c => c.Identifier == binContent[cursor]);
+                if (noCommands.Contains(command.Identifier))
+                {
+                    lines.Add(command.Name);
+                }
+                else if (oneCommands.Contains(command.Identifier))
+                {
+                    lines.Add($"{command.Name} {binContent[cursor + 1]}");
+                    cursor += 1;
+                }
+                else if (twoCommands.Contains(command.Identifier))
+                {
+                    lines.Add($"{command.Name} {binContent[cursor + 1]} {binContent[cursor + 2]}");
+                    cursor += 2;
+                }
+                else if (threeCommands.Contains(command.Identifier))
+                {
+                    lines.Add($"{command.Name} {binContent[cursor + 1]} {binContent[cursor + 2]} {binContent[cursor + 3]}");
+                    cursor += 3;
+                }
+            }
+
+            File.WriteAllLines(outFile, lines);
         }
 
         internal static ushort GetPosition()

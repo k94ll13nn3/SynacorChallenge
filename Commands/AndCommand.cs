@@ -12,9 +12,9 @@ namespace SynacorChallenge.Commands
 
         public void Execute()
         {
-            var registerNumber = VirtualMachine.GetRegisterNumber();
-            var leftValue = VirtualMachine.GetValueAt();
-            var rightValue = VirtualMachine.GetValueAt();
+            var registerNumber = VirtualMachine.GetRegisterNumberAndAdvance();
+            var leftValue = VirtualMachine.GetValueAndAdvance();
+            var rightValue = VirtualMachine.GetValueAndAdvance();
             VirtualMachine.SetRegisterValue(registerNumber, (ushort)(leftValue & rightValue));
 
             Trace.WriteLine($"stores into {registerNumber} the bitwise and of {leftValue} and {rightValue}", this.Name);
